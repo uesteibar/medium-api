@@ -1,28 +1,27 @@
 var request = require('request-json');
 var medium = request.createClient('http://www.medium.com');
 
-exports.getUser = function(username){
-	medium.get('/@' + username + '?format=json', function(err, res, body){
+exports.getUser = function(req, res){
+	medium.get('/@' + req.params.username + '?format=json', function(err, response, body){
 		var user = JSON.parse(body.substring(16)).payload;
 		user.latestPosts = completePosts(user.latestPosts);
-		console.log(user);
-		return user;
+		res.status(200).jsonp(user);
 	});
 };
 
-exports.getUserInfo = function(username){
-	medium.get('/@' + username + '?format=json', function(err, res, body){
+exports.getUserInfo = function(req, res){
+	medium.get('/@' + req.params.username + '?format=json', function(err, respones, body){
 		var user = JSON.parse(body.substring(16)).payload.value;
-		console.log(user);
-		return user;
+		res.status(200).jsonp(user);
 	});
 };
 
-exports.getPostsByTag = function(options){
-	medium.get('/tag/' + options.tag + '?' + getLimitCondition(options.limit) + 'format=json', function(err, res, body){
+exports.getPostsByTag = function(req, res){
+	medium.get('/tag/' + req.params.tag + '?' + getLimitCondition(req.params.limit) + 'format=json', function(err, response, body){
 		var posts = JSON.parse(body.substring(16)).payload.value;
 		posts = completePosts(posts);
 		console.log(posts);
+		res.status(200).jsonp(posts);
 	});
 };
 
