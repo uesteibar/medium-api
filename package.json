@@ -1,0 +1,28 @@
+{
+  "name": "medium-api",
+  "version": "0.0.0",
+  "description": "A medium.com only.read API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/uesteibar/medium-api.git"
+  },
+  "keywords": [
+    "medium",
+    "api",
+    "node"
+  ],
+  "author": "uesteibar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uesteibar/medium-api/issues"
+  },
+  "homepage": "https://github.com/uesteibar/medium-api",
+  "dependencies": {
+    "express": "^4.12.2",
+    "request-json": "^0.5.2"
+  }
+}
