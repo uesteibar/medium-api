@@ -3,8 +3,18 @@ var medium = request.createClient('http://www.medium.com');
 
 exports.getUser = function(username){
 	medium.get('/@' + username + '?format=json', function(err, res, body){
-		var user = JSON.parse(body.substring(16).payload.value);
+		var user = JSON.parse(body.substring(16)).payload;
+		user.latestPosts = completePosts(user.latestPosts);
 		console.log(user);
+		return user;
+	});
+};
+
+exports.getUserInfo = function(username){
+	medium.get('/@' + username + '?format=json', function(err, res, body){
+		var user = JSON.parse(body.substring(16)).payload.value;
+		console.log(user);
+		return user;
 	});
 };
 
@@ -34,6 +44,7 @@ function completePosts(posts){
 			var postJSON = body.substring(16);
 			posts[i] = JSON.parse(postJSON);
 		});
+		posts[i].url = 'http://www.medium.com/' + posts[i].creatorId + '/' + posts[i].id
 		
 	}
 	return posts;
