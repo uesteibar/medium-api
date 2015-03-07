@@ -18,3 +18,9 @@ exports.getUserInfo = function(req, res) {
 	});
 };
 
+exports.getPostsByTag = function(req, res) {
+	medium.get('/tag/' + req.params.tag + '?' + normalizer.getLimitCondition(req.params.limit) + 'format=json', function(err, response, body){
+		var posts = JSON.parse(body.substring(16)).payload.value;
+		posts = normalizer.completePostsByTag(posts, res);
+	});
+};

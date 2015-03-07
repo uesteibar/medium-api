@@ -18,6 +18,8 @@ app.all('*', function(req, res, next) {
 
 app.get('/user/:username', medium.getUser);
 app.get('/user/:username/info', medium.getUserInfo);
+app.get('/posts/:tag/:limit', medium.getPostsByTag);
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function () {

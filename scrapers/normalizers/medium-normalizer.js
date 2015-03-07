@@ -25,7 +25,22 @@ exports.completePosts = function(user, normalizedUser, result) {
 			}
 		});
 	}
-	// return posts;
+};
+
+exports.completePostsByTag = function(posts, result) {
+	normalizedPosts = [];
+	requestFinishedCount = 0;
+	for (var i = 0; i < posts.length; i++){
+		medium.get('/' + posts[i].creatorId + '/' + posts[i].id + '?format=json', function(err, res, body){
+			var postJSON = body.substring(16);
+			posts[i] = exports.normalizePost(JSON.parse(postJSON).payload.value);
+			normalizedPosts.push(posts[i]);
+			requestFinishedCount++;
+			if ( requestFinishedCount == (posts.length - 1)) {
+				result.status(200).jsonp(normalizedPosts);
+			}
+		});
+	}
 };
 
 exports.normalizeUserInfo = function(user) {
