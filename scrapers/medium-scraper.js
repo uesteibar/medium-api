@@ -22,8 +22,7 @@ exports.getUserInfo = function(req, res) {
 exports.getPostsByTag = function(req, res) {
 	medium.get('/tag/' + req.params.tag + '?' + getLimitCondition(req.params.limit) + 'format=json', function(err, response, body){
 		var posts = JSON.parse(body.substring(16)).payload.value;
-		posts = completePosts(posts);
-		console.log(posts);
+		posts = completePosts(posts, res);
 		res.status(200).jsonp(posts);
 	});
 };

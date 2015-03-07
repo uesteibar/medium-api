@@ -12,14 +12,17 @@ exports.getLimitCondition = function(limit) {
 
 exports.completePosts = function(posts) {
 	for (var i = 0; i < posts.length; i++){
-		medium.get('/' + posts[i].creatorId + '/' + posts[i].id + '?format=json', function(err, res, body){
+		var promise = medium.get('/' + posts[i].creatorId + '/' + posts[i].id + '?format=json', function(err, res, body){
 			var postJSON = body.substring(16);
-			posts[i] = JSON.parse(postJSON);
+			console.log("AAAAHHHHHH");
+			posts[i] = exports.normalizePost(JSON.parse(postJSON).payload.value);
+			if ( i === (posts.length - 1)) {
+				return posts;
+			}
 		});
-		posts[i] = exports.normalizePost(posts[i]);
-		posts[i].url = 'http://www.medium.com/' + posts[i].creatorId + '/' + posts[i].id		
+		console.log("SEPARADOR");
 	}
-	return posts;
+	// return posts;
 };
 
 exports.normalizeUserInfo = function(user) {
@@ -40,5 +43,28 @@ exports.normalizeUser = function(user) {
 
 
 exports.normalizePost = function(post) {
-	return post;
+	var normalizedPost = {
+		id: post.id,
+		title: post.title,
+		language: post.detectedLanguage,
+		snippet: post.virtuals.snippet,
+		wordCount: post.virtuals.wordCount,
+		readingTime: post.virtuals.readingTime,
+		url: 'http://www.medium.com/' + post.creatorId + '/' + post.id,
+		content: normalizePostContent(post.content.bodyModel)
+	};
+	console.log(normalizedPost);
+
+	return normalizedPost;
+};
+
+// Private
+
+var normalizePostContent = function(content) {
+	var normalizedContent;
+	for (i = 0; i < content.paragraphs.length; i++) {
+		normalizedContent += content.paragraphs[i].text + '\n\n';
+	}
+
+	return normalizedContent;
 };
