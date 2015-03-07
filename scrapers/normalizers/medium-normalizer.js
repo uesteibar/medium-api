@@ -10,14 +10,19 @@ exports.getLimitCondition = function(limit) {
 	return limitCondition;
 };
 
-exports.completePosts = function(posts) {
+exports.completePosts = function(user, normalizedUser, result) {
+	var posts = user.latestPosts;
+	normalizedUser.posts = [];
+	requestFinishedCount = 0;
 	for (var i = 0; i < posts.length; i++){
-		var promise = medium.get('/' + posts[i].creatorId + '/' + posts[i].id + '?format=json', function(err, res, body){
+		medium.get('/' + posts[i].creatorId + '/' + posts[i].id + '?format=json', function(err, res, body){
 			var postJSON = body.substring(16);
-			console.log("AAAAHHHHHH");
 			posts[i] = exports.normalizePost(JSON.parse(postJSON).payload.value);
-			if ( i === (posts.length - 1)) {
-				return posts;
+			normalizedUser.posts.push(posts[i]);
+			console.log();
+			requestFinishedCount++;
+			if ( requestFinishedCount == (posts.length - 1)) {
+				result.status(200).jsonp(normalizedUser);
 			}
 		});
 		console.log("SEPARADOR");
@@ -35,10 +40,9 @@ exports.normalizeUserInfo = function(user) {
 	return normalizedUser;
 };
 
-exports.normalizeUser = function(user) {
+exports.normalizeUser = function(user, res) {
 	var normalizedUser = exports.normalizeUserInfo(user.value);
-	normalizedUser.latestPosts = exports.completePosts(user.latestPosts);
-	return normalizedUser;
+	normalizedUser.latestPosts = exports.completePosts(user, normalizedUser, res);
 };
 
 
@@ -61,10 +65,9 @@ exports.normalizePost = function(post) {
 // Private
 
 var normalizePostContent = function(content) {
-	var normalizedContent;
-	for (i = 0; i < content.paragraphs.length; i++) {
+	var normalizedContent = "";
+	for (i = 1; i < content.paragraphs.length; i++) {
 		normalizedContent += content.paragraphs[i].text + '\n\n';
 	}
-
 	return normalizedContent;
 };
