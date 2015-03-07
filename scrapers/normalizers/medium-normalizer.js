@@ -19,13 +19,11 @@ exports.completePosts = function(user, normalizedUser, result) {
 			var postJSON = body.substring(16);
 			posts[i] = exports.normalizePost(JSON.parse(postJSON).payload.value);
 			normalizedUser.posts.push(posts[i]);
-			console.log();
 			requestFinishedCount++;
 			if ( requestFinishedCount == (posts.length - 1)) {
 				result.status(200).jsonp(normalizedUser);
 			}
 		});
-		console.log("SEPARADOR");
 	}
 	// return posts;
 };
@@ -35,7 +33,8 @@ exports.normalizeUserInfo = function(user) {
 		userId: user.userId,
 		name: user.name,
 		username: user.username,
-		twitter: 'http://twitter.com/' + user.twitterScreenName
+		twitter: 'http://twitter.com/' + user.twitterScreenName,
+		url: 'http://www.medium.com/@' + user.username
 	};
 	return normalizedUser;
 };
@@ -57,7 +56,6 @@ exports.normalizePost = function(post) {
 		url: 'http://www.medium.com/' + post.creatorId + '/' + post.id,
 		content: normalizePostContent(post.content.bodyModel)
 	};
-	console.log(normalizedPost);
 
 	return normalizedPost;
 };
@@ -67,7 +65,9 @@ exports.normalizePost = function(post) {
 var normalizePostContent = function(content) {
 	var normalizedContent = "";
 	for (i = 1; i < content.paragraphs.length; i++) {
-		normalizedContent += content.paragraphs[i].text + '\n\n';
+		if (content.paragraphs[i].text !== ""){
+			normalizedContent += content.paragraphs[i].text + '\n\n';
+		}
 	}
 	return normalizedContent;
 };
