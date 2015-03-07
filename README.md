@@ -1,2 +1,2 @@
 # medium-api
-A medium.com only-read API
+A medium.com read-only API
