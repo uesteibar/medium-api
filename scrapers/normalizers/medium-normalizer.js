@@ -21,6 +21,7 @@ exports.completePosts = function(user, normalizedUser, result) {
 			normalizedUser.posts.push(posts[i]);
 			requestFinishedCount++;
 			if ( requestFinishedCount == (posts.length - 1)) {
+				normalizedUser.posts = sortPosts(normalizedUser.posts);
 				result.status(200).jsonp(normalizedUser);
 			}
 		});
@@ -37,6 +38,7 @@ exports.completePostsByTag = function(posts, result) {
 			normalizedPosts.push(posts[i]);
 			requestFinishedCount++;
 			if ( requestFinishedCount == (posts.length - 1)) {
+				normalizedPosts = sortPosts(normalizedPosts);
 				result.status(200).jsonp(normalizedPosts);
 			}
 		});
@@ -67,6 +69,7 @@ exports.normalizePost = function(post) {
 		language: post.detectedLanguage,
 		snippet: post.virtuals.snippet,
 		wordCount: post.virtuals.wordCount,
+		date: post.createdAt,
 		readingTime: post.virtuals.readingTime,
 		url: 'http://www.medium.com/' + post.creatorId + '/' + post.id,
 		content: normalizePostContent(post.content.bodyModel)
@@ -85,4 +88,25 @@ var normalizePostContent = function(content) {
 		}
 	}
 	return normalizedContent;
+};
+
+var sortPosts = function(posts) {
+	var size = posts.length;
+  	for (var slot = 0; slot < size -1; slot ++) {
+    	var smallest = slot;
+    	for (var check = slot + 1; check < size; check++) {
+      		if (posts[check].date > posts[smallest].date) {
+        		smallest = check;
+      		}
+    	}
+    	swap(posts, smallest, slot);
+  	}
+  	return posts;
+};
+
+var swap = function swap(myArr, indexOne, indexTwo) {
+  	var tmpVal = myArr[indexOne];
+  	myArr[indexOne] = myArr[indexTwo];
+  	myArr[indexTwo] = tmpVal;
+  	return myArr;
 };
