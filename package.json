@@ -27,6 +27,10 @@
     "request-json": "^0.5.2"
   },
   "devDependencies": {
-    "chai": "^2.2.0"
+    "chai": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-mocha": "^2.0.1",
+    "gulp-nodemon": "^2.0.2"
   }
 }
