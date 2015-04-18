@@ -14,7 +14,7 @@ gulp.task('jshint', function() {
 
 gulp.task('test', function () {
     return gulp.src(files.dev.testjs, {read: false})
-        .pipe(mocha({reporter: 'nyan'}));
+        .pipe(mocha({reporter: 'nyan', timeout: '5000'}));
 });
 
 gulp.task('develop', function () {
