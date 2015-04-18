@@ -1,3 +1,4 @@
+var server = require('../server.js');
 
 var request = require('request');
 var base_url = 'http://localhost:5000/';
