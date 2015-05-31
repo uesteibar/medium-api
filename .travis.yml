@@ -5,4 +5,4 @@ deploy:
   app: uesteibar-medium
   provider: heroku
   api_key:
-    secure: ZX4+MWDXxAvb10ltHtKMAWx3+p9q+l561SsxBgq/afRiJpAVqvYrd2x6OCk/EgzLl+mjr5YoEgYegjlZMbY2XMmQi+tFVxVJF/xa/vR6RIJCNCZV0Ts1tyDyQc+GStM2EEt9kSHCawuUqIFOmoOPuvM/317FYlAfdZRVYLx7/Uc=
+    secure: UrRhhAqzvrC8q2E9xhf80CHFHtzCVQyhF0yE6vxJiyuBSFdpORE+dhQgSQ3VFdoL8WlxL0pzqtA45IcTZyxdmZnI4MQFC8tpcPUVk32s7CcqTOE44n9Yzt73KsKq9joZFF8gLYAYELECIWDghn2xzP5xJAdBbmEj0MnkUQxTpdE=
